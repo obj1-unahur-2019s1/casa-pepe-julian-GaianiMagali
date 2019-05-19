@@ -1,0 +1,94 @@
+import cosas.*
+import casa.*
+import cuentaBancaria.*
+
+test "comprar/cantidad de cosas compradas" {
+	casaDePepeYJulian.comprar(tiraDeAsado)
+	casaDePepeYJulian.comprar(cama)
+	casaDePepeYJulian.comprar(plancha)
+	assert.equals(3, casaDePepeYJulian.cantidadDeCosasCompradas())
+}
+
+test "tiene comida" {
+	casaDePepeYJulian.comprar(tiraDeAsado)
+	casaDePepeYJulian.comprar(cama)
+	casaDePepeYJulian.comprar(plancha)
+	assert.equals(true, casaDePepeYJulian.tieneComida())
+}
+
+test "viene de equiparse" {
+	casaDePepeYJulian.comprar(tiraDeAsado)
+	casaDePepeYJulian.comprar(cama)
+	casaDePepeYJulian.comprar(plancha)
+	assert.equals(true, casaDePepeYJulian.vieneDeEquiparse())
+}
+
+test"es derrochona" {
+	casaDePepeYJulian.comprar(tiraDeAsado)
+	casaDePepeYJulian.comprar(cama)
+	casaDePepeYJulian.comprar(plancha)
+	assert.equals(true, casaDePepeYJulian.esDerrochona())
+}
+
+test "compra mas cara" {
+	casaDePepeYJulian.comprar(tiraDeAsado)
+	casaDePepeYJulian.comprar(cama)
+	casaDePepeYJulian.comprar(plancha)
+	assert.equals(cama, casaDePepeYJulian.compraMasCara())
+}
+
+test "Electrodomesticos comprados" {
+	casaDePepeYJulian.comprar(tiraDeAsado)
+	casaDePepeYJulian.comprar(cama)
+	casaDePepeYJulian.comprar(plancha)
+	casaDePepeYJulian.comprar(heladera)
+	assert.equals(2, casaDePepeYJulian.electrodomesticosComprados())
+}
+
+test "Mala epoca" {
+	casaDePepeYJulian.comprar(tiraDeAsado)
+	casaDePepeYJulian.comprar(cama)
+	casaDePepeYJulian.comprar(plancha)
+	assert.equals(false, casaDePepeYJulian.malaEpoca())
+}
+
+test "Falta comida" {
+	casaDePepeYJulian.comprar(tiraDeAsado)
+	casaDePepeYJulian.comprar(heladera)
+	casaDePepeYJulian.comprar(plancha)
+	casaDePepeYJulian.comprar(paqueteDeFideos)
+	assert.equals(false, casaDePepeYJulian.faltaComida())
+}
+
+test "Que falta comprar" {
+	casaDePepeYJulian.comprar(tiraDeAsado)
+	casaDePepeYJulian.comprar(heladera)
+	casaDePepeYJulian.comprar(plancha)
+	var lista = [ tiraDeAsado, heladera, plancha, cama, paqueteDeFideos ]
+	// var resultado = [cama,paqueteDeFideos]
+	assert.equals([ cama, paqueteDeFideos ], casaDePepeYJulian.queFaltaComprar(lista))
+}
+
+//cuenta bancaria
+test "comprar" {
+	cuentaCorriente.depositar(3000)
+	cuentaConGastos.depositar(200000)
+	casaDePepeYJulian.comprar(tiraDeAsado)
+	assert.equals(202630, cuentaCombinada.saldo())
+}
+
+test "gastar/dinero disponible" {
+	cuentaCorriente.depositar(3000)
+	cuentaConGastos.depositar(200000)
+	assert.equals(202980, cuentaCombinada.saldo())
+	casaDePepeYJulian.gastar(350)
+	// assert.equals(2650, cuentaCorriente.saldo())
+	assert.equals(202630, casaDePepeYJulian.dineroDisponible())
+}
+
+test "test cambiar cuenta" {
+	cuentaConGastos.depositar(200000)
+	casaDePepeYJulian.cambiarCuenta(cuentaConGastos)
+	casaDePepeYJulian.gastar(350)
+	assert.equals(199610, cuentaConGastos.saldo())
+}
